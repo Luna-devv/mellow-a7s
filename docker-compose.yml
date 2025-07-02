@@ -43,3 +43,35 @@ services:
                 condition: service_healthy
         networks:
         - analytics_network
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: analytics-grafana
+        ports:
+            - "9003:3000"
+        volumes:
+            - grafana_data:/var/lib/grafana
+            - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+            - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+            - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+        environment:
+            GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+            GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+            GF_AUTH_ANONYMOUS_ENABLED: ${GRAFANA_ANONYMOUS_ACCESS_ENABLED}
+            GF_AUTH_ANONYMOUS_ORG_NAME: ${GRAFANA_ANONYMOUS_ORG_NAME}
+            GF_AUTH_ANONYMOUS_ORG_ROLE: ${GRAFANA_ANONYMOUS_ORG_ROLE}
+            GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+        depends_on:
+            clickhouse:
+                condition: service_healthy
+        networks:
+        - analytics_network
+
+volumes:
+    clickhouse_data:
+    clickhouse_logs:
+    grafana_data:
+
+networks:
+    analytics_network:
+        driver: bridge
