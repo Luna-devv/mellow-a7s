@@ -106,6 +106,23 @@ func flushTable(conn clickhouse.Conn, table string) {
 				continue
 			}
 
+			if col == "timestamp" {
+				tsStr, isString := val.(string)
+				if !isString {
+					log.Printf("Warning: Timestamp for table %s is not a string. Expected string, got %T. Skipping event.", table, val)
+					continue
+				}
+
+				parsedTime, err := time.Parse(time.RFC3339Nano, tsStr)
+				if err != nil {
+					log.Printf("Error parsing timestamp '%s' for table %s: %v. Skipping event.", tsStr, table, err)
+					continue
+				}
+
+				values = append(values, parsedTime)
+				continue
+			}
+
 			values = append(values, val)
 		}
 
