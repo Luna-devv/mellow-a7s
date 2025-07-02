@@ -25,6 +25,7 @@ var (
 	bufferMutex  sync.Mutex
 	flushSignal  = make(chan string, 100)
 	message, _   = os.ReadFile("message.txt")
+	apiToken     = os.Getenv("API_TOKEN")
 )
 
 func main() {
@@ -64,6 +65,11 @@ func register(w http.ResponseWriter, r *http.Request) {
 	table := r.PathValue("table")
 	if table == "" {
 		http.Error(w, "Not Found", http.StatusNotFound)
+		return
+	}
+
+	if r.Header.Get("Authorization") != "Bearer "+apiToken {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 

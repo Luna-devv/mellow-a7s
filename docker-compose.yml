@@ -37,6 +37,7 @@ services:
             CLICKHOUSE_DB: events
             CLICKHOUSE_USER: ${CLICKHOUSE_USER}
             CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+            API_TOKEN: ${API_TOKEN}
         depends_on:
             clickhouse:
                 condition: service_healthy
