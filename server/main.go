@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,6 +12,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/xeipuuv/gojsonschema"
 )
 
@@ -44,6 +46,9 @@ func main() {
 
 	http.HandleFunc("GET /", get)
 	http.HandleFunc("POST /api/register/{table}", register)
+	http.HandleFunc("GET /api/count/{table}", func(w http.ResponseWriter, r *http.Request) {
+		count(w, r, conn)
+	})
 
 	log.Printf("ready!")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -56,7 +61,6 @@ func get(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/plain")
-
 	w.WriteHeader(http.StatusOK)
 	w.Write(message)
 }
@@ -125,4 +129,49 @@ func register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusAccepted)
+}
+
+func count(w http.ResponseWriter, r *http.Request, conn clickhouse.Conn) {
+	table := r.PathValue("table")
+	if table == "" {
+		http.Error(w, "Not Found", http.StatusNotFound)
+		return
+	}
+
+	if r.Header.Get("Authorization") != "Bearer "+apiToken {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	schemasMutex.RLock()
+	_, exists := compiledSchemas[table]
+	schemasMutex.RUnlock()
+
+	if !exists {
+		http.Error(w, "Not Found", http.StatusNotFound)
+		return
+	}
+
+	selectSQL := fmt.Sprintf(
+		"SELECT name, type, count() AS total_count FROM %s.%s GROUP BY name, type",
+		os.Getenv("CLICKHOUSE_DB"),
+		table,
+	)
+
+	var count []struct {
+		Name       string `ch:"name" json:"name"`
+		Type       string `ch:"type" json:"type"`
+		TotalCount uint64 `ch:"total_count" json:"count"`
+	}
+
+	err := conn.Select(context.Background(), &count, selectSQL)
+	if err != nil {
+		log.Printf("Error executing SELECT query for table %s: %v", table, err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(count)
 }
