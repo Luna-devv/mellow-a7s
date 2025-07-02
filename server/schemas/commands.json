@@ -1,0 +1,40 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Command Invocations",
+    "description": "Schema for Wamellow Command usage tracking events",
+    "type": "object",
+    "required": [
+        "timestamp",
+        "user_id",
+        "type",
+        "name"
+    ],
+    "properties": {
+        "timestamp": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "user_id": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32,
+            "pattern": "^[0-9a-f]+$"
+        },
+        "type": {
+            "type": "string",
+            "enum": ["command", "context", "button", "select", "modal", "text"]
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+        }
+    },
+    "additionalProperties": false,
+    "x-clickhouse-column-order": [
+        "timestamp",
+        "user_id",
+        "type",
+        "name"
+    ]
+}
