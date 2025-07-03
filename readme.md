@@ -11,9 +11,17 @@ This is the analytics engine (v2) for the [wamellow.com](https://wamellow.com) d
 If you need help using this, join **[our Discord Server](https://discord.com/invite/yYd6YKHQZH)**.
 
 ## Setup
+Create the following `.env`:
 ```
+CLICKHOUSE_USER=analytics_user
+CLICKHOUSE_PASSWORD=your_super_secret_clickhouse_password
 
-To start the docker container (detached) run 
-```bash
-docker compose up -d
+GRAFANA_ADMIN_USER=admin
+GRAFANA_ADMIN_PASSWORD=your_grafana_admin_password
+
+GRAFANA_ANONYMOUS_ACCESS_ENABLED=true
+GRAFANA_ANONYMOUS_ORG_NAME=Wamellow
+GRAFANA_ANONYMOUS_ORG_ROLE=Viewer
+
+API_TOKEN=secure
 ```
