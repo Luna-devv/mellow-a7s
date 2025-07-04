@@ -3,10 +3,10 @@ name: Publish to GHCR
 on:
   push:
     branches:
-      - main
+      - v2
   pull_request:
     branches:
-      - main
+      - v2
 
 permissions:
   contents: read
@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${REPOSITORY_OWNER}/${{ github.event.repository.name }}:latest .
+          docker build -t ghcr.io/${REPOSITORY_OWNER}/${{ github.event.repository.name }}:latest server/
 
       - name: Push Docker image
         run: |

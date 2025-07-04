@@ -18,7 +18,7 @@ import (
 
 const (
 	MAX_BATCH_SIZE       = 1000
-	BATCH_FLUSH_INTERVAL = 10 * time.Second
+	BATCH_FLUSH_INTERVAL = 60 * time.Second
 	SCHEMA_DIR           = "./schemas"
 )
 
