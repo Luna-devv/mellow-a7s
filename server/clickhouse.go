@@ -101,8 +101,13 @@ func flushTable(conn clickhouse.Conn, table string) {
 
 		for _, col := range columns {
 			val, ok := event[col]
-			if !ok {
+			if !ok && col != "timestamp" {
 				log.Printf("Warning: Column '%s' not found in event for table %s. Skipping event.", col, table)
+				continue
+			}
+
+			if !ok && col == "timestamp" {
+				values = append(values, time.Now())
 				continue
 			}
 

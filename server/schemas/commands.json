@@ -4,7 +4,6 @@
     "description": "Schema for Wamellow Command usage tracking events",
     "type": "object",
     "required": [
-        "timestamp",
         "user_id",
         "type",
         "name"

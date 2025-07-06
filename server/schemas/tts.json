@@ -4,7 +4,6 @@
     "description": "Schema for Text to Speech API usage tracking events",
     "type": "object",
     "required": [
-        "timestamp",
         "service_id",
         "language",
         "speaker"
