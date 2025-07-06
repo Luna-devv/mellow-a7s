@@ -111,7 +111,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 		for _, desc := range result.Errors() {
 			validationErrors = append(validationErrors, fmt.Sprintf("%s: %s", desc.Field(), desc.Description()))
 		}
-		log.Printf("Invalid event payload for table %s: %s", table, strings.Join(validationErrors, "; "))
+		log.Printf("Invalid event payload for table %s: %s\n%v", table, strings.Join(validationErrors, "; "), eventData)
 		http.Error(w, fmt.Sprintf("Invalid event payload: %s", strings.Join(validationErrors, "; ")), http.StatusBadRequest)
 		return
 	}
