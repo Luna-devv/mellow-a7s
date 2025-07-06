@@ -21,7 +21,6 @@ PARTITION BY toYYYYMM(timestamp);
 CREATE TABLE IF NOT EXISTS events.actions (
     timestamp DateTime64(3) DEFAULT now64(3),
     guild_id String,
-    type LowCardinality(String),
     name LowCardinality(String),
 ) ENGINE = MergeTree()
 ORDER BY (timestamp, name)

@@ -6,7 +6,6 @@
     "required": [
         "timestamp",
         "guild_id",
-        "type",
         "name"
     ],
     "properties": {
@@ -16,13 +15,9 @@
         },
         "guild_id": {
             "type": "string",
-            "minLength": 18,
+            "minLength": 10,
             "maxLength": 22,
             "pattern": "^[0-9]+$"
-        },
-        "type": {
-            "type": "string",
-            "enum": ["notification"]
         },
         "name": {
             "type": "string",
@@ -34,7 +29,6 @@
     "x-clickhouse-column-order": [
         "timestamp",
         "guild_id",
-        "type",
         "name"
     ]
 }

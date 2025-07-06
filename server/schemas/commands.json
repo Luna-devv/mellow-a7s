@@ -16,7 +16,7 @@
         },
         "user_id": {
             "type": "string",
-            "minLength": 18,
+            "minLength": 10,
             "maxLength": 22,
             "pattern": "^[0-9]+$"
         },
