@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS events.tts (
     service_id String,
     language LowCardinality(String),
     speaker LowCardinality(String),
+    chars UInt16,
+    transed Boolean DEFAULT false
 ) ENGINE = MergeTree()
 ORDER BY (timestamp, service_id)
 PARTITION BY toYYYYMM(timestamp);

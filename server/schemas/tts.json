@@ -6,7 +6,8 @@
     "required": [
         "service_id",
         "language",
-        "speaker"
+        "speaker",
+        "chars"
     ],
     "properties": {
         "timestamp": {
@@ -24,6 +25,14 @@
         "speaker": {
             "type": "string",
             "minLength": 3
+        },
+        "chars": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 5000
+        },
+        "transed": {
+            "type": "boolean"
         }
     },
     "additionalProperties": false,
@@ -31,6 +40,8 @@
         "timestamp",
         "service_id",
         "language",
-        "speaker"
+        "speaker",
+        "chars",
+        "transed"
     ]
 }
