@@ -97,7 +97,7 @@ func flushTable(conn clickhouse.Conn, table string) {
 	}
 
 	for _, event := range eventsToFlush {
-		values := make([]interface{}, 0, len(columns))
+		values := make([]any, 0, len(columns))
 
 		for _, col := range columns {
 			val, ok := event[col]

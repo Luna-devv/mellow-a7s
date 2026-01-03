@@ -10,4 +10,4 @@ Most API routes are under /api/
 
      Website: https://wamellow.com
      Grafana: https://stats.wamellow.com
- Source Code: https://github.com/Luna-devv/mellow-a7s
+ Source Code: https://github.com/shi-gg/mellow-a7s

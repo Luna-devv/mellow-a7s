@@ -23,7 +23,7 @@ const (
 )
 
 var (
-	tableBuffers = make(map[string][]map[string]interface{})
+	tableBuffers = make(map[string][]map[string]any)
 	bufferMutex  sync.Mutex
 	flushSignal  = make(chan string, 100)
 	message, _   = os.ReadFile("message.txt")
@@ -92,7 +92,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var eventData map[string]interface{}
+	var eventData map[string]any
 	if err := json.Unmarshal(bodyBytes, &eventData); err != nil {
 		http.Error(w, "Invalid JSON payload: "+err.Error(), http.StatusBadRequest)
 		return

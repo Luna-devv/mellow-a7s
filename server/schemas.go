@@ -41,14 +41,14 @@ func loadAndCompileSchemas(dir string) error {
 			return fmt.Errorf("failed to read schema file %s: %w", path, err)
 		}
 
-		var rawSchema map[string]interface{}
+		var rawSchema map[string]any
 		if err := json.Unmarshal(schemaBytes, &rawSchema); err != nil {
 			return fmt.Errorf("failed to unmarshal schema JSON from %s: %w", path, err)
 		}
 
 		var columnOrder []string
 		if orderVal, ok := rawSchema["x-clickhouse-column-order"]; ok {
-			if orderList, ok := orderVal.([]interface{}); ok {
+			if orderList, ok := orderVal.([]any); ok {
 				for _, item := range orderList {
 					if colName, ok := item.(string); ok {
 						columnOrder = append(columnOrder, colName)
