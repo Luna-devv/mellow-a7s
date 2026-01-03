@@ -3,6 +3,7 @@ services:
         image: clickhouse/clickhouse-server:latest
         container_name: analytics-clickhouse
         hostname: clickhouse-server
+        restart: unless-stopped
         ports:
             - "9001:8123"
             - "9000:9000"
@@ -10,6 +11,9 @@ services:
             - clickhouse_data:/var/lib/clickhouse
             - clickhouse_logs:/var/log/clickhouse-server
             - ./clickhouse/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+            - ./clickhouse/users.xml:/etc/clickhouse-server/users.xml
+            - ./clickhouse/logs.xml:/etc/clickhouse-server/config.d/logs.xml:ro
+            - ./clickhouse/low-resources.xml:/etc/clickhouse-server/config.d/low-resources.xml:ro
         environment:
             CLICKHOUSE_USER: ${CLICKHOUSE_USER}
             CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
@@ -23,15 +27,16 @@ services:
             timeout: 5s
             retries: 10
         networks:
-        - analytics_network
+            - analytics_network
 
     server:
         build:
             context: ./server
             dockerfile: Dockerfile
         container_name: analytics-server
+        restart: unless-stopped
         ports:
-        - "9002:8080"
+            - "9002:8080"
         environment:
             CLICKHOUSE_ADDR: clickhouse-server:9000
             CLICKHOUSE_DB: events
@@ -42,11 +47,12 @@ services:
             clickhouse:
                 condition: service_healthy
         networks:
-        - analytics_network
+            - analytics_network
 
     grafana:
         image: grafana/grafana:latest
         container_name: analytics-grafana
+        restart: unless-stopped
         ports:
             - "9003:3000"
         volumes:
@@ -65,7 +71,7 @@ services:
             clickhouse:
                 condition: service_healthy
         networks:
-        - analytics_network
+            - analytics_network
 
 volumes:
     clickhouse_data:
