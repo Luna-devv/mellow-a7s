@@ -1,5 +1,5 @@
 [![](https://img.shields.io/discord/828676951023550495?color=5865F2&logo=discord&logoColor=white)](https://discord.com/invite/yYd6YKHQZH)
-![](https://img.shields.io/github/repo-size/Luna-devv/nekostic?maxAge=3600)
+![](https://img.shields.io/github/repo-size/shi-gghi-gg/mellow-a7s?maxAge=3600)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I6AFVAP)
 
