@@ -4,6 +4,7 @@
     "description": "Schema for Wamellow Command usage tracking events",
     "type": "object",
     "required": [
+        "service_id",
         "guild_id",
         "name"
     ],
@@ -11,6 +12,10 @@
         "timestamp": {
             "type": "string",
             "format": "date-time"
+        },
+        "service_id": {
+            "type": "string",
+            "minLength": 1
         },
         "guild_id": {
             "type": "string",
@@ -27,6 +32,7 @@
     "additionalProperties": false,
     "x-clickhouse-column-order": [
         "timestamp",
+        "service_id",
         "guild_id",
         "name"
     ]
