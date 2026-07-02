@@ -4,6 +4,7 @@
     "description": "Schema for Wamellow Command usage tracking events",
     "type": "object",
     "required": [
+        "service_id",
         "user_id",
         "type",
         "name"
@@ -13,6 +14,10 @@
             "type": "string",
             "format": "date-time"
         },
+        "service_id": {
+            "type": "string",
+            "minLength": 1
+        },
         "user_id": {
             "type": "string",
             "minLength": 10,
@@ -21,7 +26,14 @@
         },
         "type": {
             "type": "string",
-            "enum": ["command", "context", "button", "select", "modal", "text"]
+            "enum": [
+                "command",
+                "context",
+                "button",
+                "select",
+                "modal",
+                "text"
+            ]
         },
         "name": {
             "type": "string",
@@ -32,6 +44,7 @@
     "additionalProperties": false,
     "x-clickhouse-column-order": [
         "timestamp",
+        "service_id",
         "user_id",
         "type",
         "name"
